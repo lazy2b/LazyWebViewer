@@ -1,23 +1,39 @@
+
 buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
     repositories {
-        maven { url 'https://jitpack.io' }
+        maven() {
+            url "https://jitpack.io"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         mavenCentral()
         google()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.0'
     }
 }
 
 allprojects {
     repositories {
-        maven { url 'https://jitpack.io' }
+        maven() {
+            url "https://jitpack.io"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         mavenCentral()
         google()
     }
+    tasks.withType(Javadoc) {
+        options{ encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/8/docs/api"
+        }
+    }
 }
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir
