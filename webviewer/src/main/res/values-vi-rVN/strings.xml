@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tips_no_configs">Cấu hình không hợp lệ.</string>
+    <string name="tips_exit">Nhấn lại để thoát</string>
+    <string name="tips_js_alert_title">Cảnh báo</string>
+    <string name="tips_js_alert_ok">đồng ý</string>
+    <string name="tips_choose_title">Lựa chọn</string>
+    <string name="url_scheme_fail">Ứng dụng chưa được cài đặt. Vui lòng cài đặt nó để sử dụng tính năng này.</string>
+</resources>

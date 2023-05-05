@@ -1,0 +1,120 @@
+apply plugin: 'com.android.application'
+
+android {
+    apply from: "settings.gradle"
+    compileSdk 33
+    namespace base.appId
+    defaultConfig {
+        applicationId base.appId
+        minSdk 21
+        targetSdk 33
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'ONESIGNAL_APPID', "\"${onesignal.appId}\""
+        buildConfigField 'String', 'ADJUST_TOKEN', "\"${adjust.appToken}\""
+        buildConfigField 'String', 'DATS', "\"${base.settings}\""
+        resValue('string', 'fb_app_id', "${facebook.appId}")
+        resValue('string', 'fb_client_token', "${facebook.clientToken}")
+//        manifestPlaceholders = manifestPlaceholders + [fbAppId: "\"${facebook.appId}\""]
+//        manifestPlaceholders = manifestPlaceholders + [fbClientToken: "${facebook.clientToken}"]
+    }
+    flavorDimensions 'default'
+    productFlavors {
+        develop {
+            dimension 'default'
+            versionCode base.develop.verCode
+            versionName base.develop.verName
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = manifestPlaceholders + [APP_NAME: "[D]" + base.appName]
+            buildConfigField 'String', 'DATP', "\"${base.develop.pz}\""
+        }
+        preview {
+            dimension 'default'
+            versionCode base.preview.verCode
+            versionName base.preview.verName
+            applicationIdSuffix ".pre"
+            manifestPlaceholders = manifestPlaceholders + [APP_NAME: "[P]" + base.appName]
+            buildConfigField 'String', 'DATP', "\"${base.preview.pz}\""
+        }
+        online {
+            dimension 'default'
+            versionCode base.online.verCode
+            versionName base.online.verName
+            manifestPlaceholders = manifestPlaceholders + [APP_NAME: base.appName]
+            buildConfigField 'String', 'DATP', "\"${base.online.pz}\""
+        }
+    }
+    signingConfigs {
+        keystore {
+            storeFile file(jks.dir)
+            storePassword jks.pwd
+            keyAlias jks.alias
+            keyPassword jks.pwd
+            //v2SigningEnabled false
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.keystore
+            jniDebuggable true
+            // 混淆
+            minifyEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            // zipAlign优化
+            zipAlignEnabled true
+            pseudoLocalesEnabled true
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.keystore
+            jniDebuggable false
+            // 混淆
+            minifyEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            // zipAlign优化
+            zipAlignEnabled true
+            pseudoLocalesEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = base.apkName + "-" + variant.buildType.name + "-" + variant.productFlavors[0].name + ".apk"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    androidResources {
+        ignoreAssetsPattern 'jks'
+    }
+    packagingOptions {
+        resources {
+            excludes += ['README.md']
+        }
+    }
+
+    testOptions{
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    implementation project(":webviewer")
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'org.jetbrains:annotations:24.0.1'
+    implementation 'com.alibaba:fastjson:1.1.71.android'
+//    implementation 'com.alibaba.fastjson2:fastjson2:2.0.21.android'
+
+    // Test
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+}

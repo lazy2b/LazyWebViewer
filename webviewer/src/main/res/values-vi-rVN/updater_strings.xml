@@ -1,0 +1,21 @@
+<resources>
+    <string name="updater_progress_dialog_downloading">Tải về phiên bản mới</string>
+    <string name="updater_download_progress">tiến trình tải xuống: %1$d</string>
+    <string name="updater_download_success">tải xuống thành công!</string>
+    <string name="updater_download_fail">tải xuống thất bại!</string>
+    <string name="updater_download_file_is_empty">tệp đã tải xuống trống!</string>
+    <string name="updater_downloading">đang tải xuống...</string>
+    <string name="updater_download">Tải về</string>
+    <string name="updater_continue_download">Tiếp tục tải về</string>
+    <string name="updater_found_new_version">Phiên bản mới</string>
+    <string name="updater_download_later">Sau</string>
+    <string name="updater_unwifi_tips">Hãy kiểm tra kết nối mạng của bạn không ở chế độ wifi, việc tải phiên bản mới sẽ tiêu tốn một lượng lưu lượng nhất định, bạn có tiếp tục tải không?</string>
+    <string name="updater_dont_update">Hủy</string>
+    <string name="updater_another_way">Cách khác</string>
+    <string name="updater_update_now">Cập nhật ngay</string>
+    <string name="updater_version_upgrade">Nâng cấp</string>
+    <string name="updater_no_new_version">Không nâng cấp</string>
+    <string name="updater_no_url">Không Url</string>
+    <string name="updater_no_browser">Không Trình duyệt！</string>
+    <string name="updater_simple_context">Một số tối ưu hóa...</string>
+</resources>

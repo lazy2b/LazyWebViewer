@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tips_no_configs">无效的配置。</string>
+    <string name="tips_exit">再按一次退出应用</string>
+    <string name="tips_js_alert_title">提示</string>
+    <string name="tips_js_alert_ok">确定</string>
+    <string name="tips_choose_title">选择</string>
+    <string name="url_scheme_fail">目标应用未安装，请安装后重试。</string>
+</resources>

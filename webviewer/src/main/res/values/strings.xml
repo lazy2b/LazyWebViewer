@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tips_no_configs">Invalid configuration.</string>
+    <string name="tips_exit">Press again to exit</string>
+    <string name="tips_js_alert_title">alert</string>
+    <string name="tips_js_alert_ok">OK</string>
+    <string name="tips_choose_title">Choose</string>
+    <string name="url_scheme_fail">Application is not installed. Please install it to use this feature.</string>
+</resources>
