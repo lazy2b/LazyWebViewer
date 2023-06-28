@@ -1,7 +1,7 @@
 ext.base = [
         appId  : "com.lazy2b.demo.webview",
         appName: "LazyWebViewer",
-        apkName: "sHiTop",
+        apkName: "LazyWebViewer",
         settings: '{\\"link\\":\\"?referralcode=63851941ac02be537c7aa26f&fromApk\\",\\"currency\\":\\"PHP\\",\\"eventTknMap\\":{\\"FB_LOGIN\\":\\"l8rclb\\",\\"FB_REGISTER\\":\\"j8122t\\",\\"FIRST_RECHARGE\\":\\"gjeuqp\\",\\"GOOGLE_LOGIN\\":\\"qllbcp\\",\\"GOOGLE_REGISTER\\":\\"occ888\\",\\"LOGIN\\":\\"bi27q8\\",\\"PAGE_VIEW\\":\\"f66u5h\\",\\"PAY_RECHARGE\\":\\"fht68v\\",\\"REGISTER\\":\\"32qotq\\",\\"SECOND_RECHARGE\\":\\"9v0egd\\"}}',
         develop: [
                 verCode: 1,

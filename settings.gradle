@@ -1,2 +1,3 @@
 include ':webviewer'
-//include ':app'
+include ':app'
+//include ':hty'

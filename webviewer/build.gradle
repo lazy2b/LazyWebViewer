@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
+//    id 'maven-publish'
 }
 
 group = 'com.github.lazy2b'
@@ -31,34 +31,8 @@ android {
     }
 }
 
-afterEvaluate{
-    publishing {
-        publications {
-            release(MavenPublication){
-                from components.release
-                groupId = 'com.github.lazy2b'
-                artifactId = 'webviewer'
-                version = '0.0.5'
-            }
-        }
-    }
-}
-
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.adjust.sdk:adjust-android-webbridge:4.33.3'
-    //aj start
-    implementation 'com.adjust.sdk:adjust-android:4.33.3'
-    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
-    implementation 'com.facebook.android:facebook-core:16.0.1'
-    implementation 'com.tencent:mmkv:1.2.15'
-//    implementation 'com.facebook.android:facebook-android-sdk:16.0.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-
-    implementation 'com.alibaba:fastjson:1.1.71.android'
-//    implementation 'com.alibaba.fastjson2:fastjson2:2.0.21.android'
-    implementation 'com.github.lazy2b:LazyUpdater:2.2.2'
-    implementation 'com.airbnb.android:lottie:6.0.0'
 
 }

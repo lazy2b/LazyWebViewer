@@ -1,7 +1,6 @@
 package com.lazy2b.demo.test.xcode;
 
 import com.alibaba.fastjson.JSON;
-import com.lazylibs.webviewer.IGlobal;
 import com.lazylibs.webviewer.model.Pz;
 import com.lazylibs.webviewer.model.U;
 import com.lazylibs.webviewer.utils.Xc;

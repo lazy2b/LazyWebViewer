@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import com.lazy2b.demo.test.xcode.Project;
 import com.lazy2b.demo.test.xcode.XResult;
 import com.lazy2b.demo.test.xcode.XTools;
-import com.lazylibs.webviewer.IGlobal;
 
 import org.junit.Assert;
 import org.junit.Test;

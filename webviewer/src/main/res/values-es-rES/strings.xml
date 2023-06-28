@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="tips_no_configs">Configuración inválida.</string>
-    <string name="tips_exit">Presiona de nuevo para salir</string>
-    <string name="tips_js_alert_title">Alerta</string>
-    <string name="tips_js_alert_ok">Ok</string>
-    <string name="tips_choose_title">Elegir</string>
-    <string name="url_scheme_fail">La aplicación no está instalada. Por favor, instálala para usar esta función.</string>
-</resources>

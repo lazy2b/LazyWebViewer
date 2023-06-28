@@ -1,7 +1,5 @@
 package com.lazy2b.demo.test.xcode;
 
-import com.lazylibs.webviewer.IGlobal;
-
 public class Project {
     public String code;
     public String name;

@@ -1,7 +1,5 @@
 package com.lazy2b.demo.test.xcode;
 
-import com.lazylibs.webviewer.IGlobal;
-
 import java.util.ArrayList;
 import java.util.List;
 
