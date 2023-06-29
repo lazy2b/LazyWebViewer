@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 
-public class WebViewer extends AppCompatActivity {
+public class WebViewer extends Activity {
     protected WebView webView;
     protected WebViewHelper webViewHelper;
     protected String cLoadUrl = "";
@@ -22,10 +21,11 @@ public class WebViewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.tpl_webviewer);
         webView = findViewById(R.id.wb_view);
         cLoadUrl = getIntent().getStringExtra(WEB_URL);
         cLoadUrl = TextUtils.isEmpty(cLoadUrl) ? "https://github.com/lazy2b/LazyWebViewer" : cLoadUrl;
+        String abc = String.join("|", LazyWebChromeClient.mimeTypes);
         webViewHelper = new WebViewHelper.Builder(new IWebHandler() {
 
             @Override
@@ -45,6 +45,7 @@ public class WebViewer extends AppCompatActivity {
                 if (!firstLoadOver) {
                     firstLoadOver = true;
                     // handle first loaded...
+                    findViewById(R.id.wb_loading).setVisibility(View.GONE);
                 }
             }
 
@@ -69,7 +70,7 @@ public class WebViewer extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (webViewHelper != null) {
+        if (webViewHelper != null) {// handle choose file results...
             webViewHelper.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -91,8 +92,6 @@ public class WebViewer extends AppCompatActivity {
         }
     }
 
-
-    // add in 1109
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (!isBlank && keyCode == 4 && webView.canGoBack()) {

@@ -12,16 +12,4 @@ interface IWebHandler extends IActivityGetter {
 
     default void onRealPageFinished(String url, boolean isReceivedError) {
     }
-
-    default LazyFinishedHelper getLazyFinishedHelper() {
-        return null;
-    }
-
-    default WebChromeClient getWebChromeClient() {
-        return null;
-    }
-
-    default WebViewClient getWebViewClient() {
-        return null;
-    }
 }

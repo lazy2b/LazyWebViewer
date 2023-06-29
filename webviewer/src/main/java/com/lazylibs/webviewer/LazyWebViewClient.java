@@ -11,8 +11,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.Nullable;
-
 public class LazyWebViewClient extends WebViewClient {
 
     public LazyWebViewClient(LazyFinishedHelper finishedHelper) {
@@ -58,7 +56,7 @@ public class LazyWebViewClient extends WebViewClient {
         return (uri != null && filterUrlScheme(view, uri.toString())) || super.shouldOverrideUrlLoading(view, request);
     }
 
-    private boolean filterUrlScheme(WebView view, @Nullable String url) {
+    private boolean filterUrlScheme(WebView view, String url) {
         if (!TextUtils.isEmpty(url)) {
             if (!url.startsWith("http")) {
                 WebViewHelper.logE("OverrideUrl", url);

@@ -14,11 +14,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 public class LazyWebChromeClient extends WebChromeClient {
-
     private static final int CHOOSE_REQUEST_CODE = 0x601;
     //    private ValueCallback<Uri> uploadFile;
     private ValueCallback<Uri[]> uploadFiles;
-
     public static final String DOC = "application/msword";
     public static final String DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     public static final String XLS = "application/vnd.ms-excel application/x-excel";
@@ -26,8 +24,7 @@ public class LazyWebChromeClient extends WebChromeClient {
     public static final String PPT = "application/vnd.ms-powerpoint";
     public static final String PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
     public static final String PDF = "application/pdf";
-    //选择本地文件类型：图片及文档
-    private final String[] mimeTypes = {"image/*", DOCX, PPT, PPTX, PDF, XLSX, XLS, DOC};
+    public static final String[] mimeTypes = {"image/*", DOCX, PPT, PPTX, PDF, XLSX, XLS, DOC};
 
     private final IWebHandler iWebHandler;
     private final LazyFinishedHelper finishedHelper;
@@ -68,7 +65,7 @@ public class LazyWebChromeClient extends WebChromeClient {
 
     @Override
     public void onPermissionRequest(PermissionRequest request) {
-        //需要注意
+        //handle permission... （TODO）
         request.grant(request.getResources());
     }
 
@@ -78,15 +75,12 @@ public class LazyWebChromeClient extends WebChromeClient {
         return true;
     }
 
-    /**
-     * 打开本地存储选择文件
-     */
     public void openFileChooseProcess(ValueCallback<Uri[]> valueCallback) {
         this.uploadFiles = valueCallback;
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //设置旋转文件类型（如果是所有文件：intent.setType("*/*")）
-        intent.setType("image/*" + "|" + DOCX + "|" + PPT + "|" + PPTX + "|" + PDF + "|" + XLSX + "|" + XLS + "|" + DOC);
+        //intent.setType("*/*") => select all...
+        intent.setType(String.join("|", mimeTypes));
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);//iWebHandler.getString(R.string.tips_choose_title)
         iWebHandler.requireActivity().startActivityForResult(Intent.createChooser(intent, null), CHOOSE_REQUEST_CODE);
     }
@@ -111,7 +105,6 @@ public class LazyWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-
         AlertDialog.Builder b2 = new AlertDialog.Builder(iWebHandler.requireActivity()).setTitle(android.R.string.dialog_alert_title).setMessage(message).setPositiveButton(android.R.string.ok, (AlertDialog.OnClickListener) (dialog, which) -> result.confirm());
         b2.setCancelable(false);
         b2.create();

@@ -9,9 +9,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.HashMap;
 
 
@@ -19,15 +16,15 @@ public class WebViewHelper {
 
     public static class Builder {
 
-        public Builder(@Nullable IWebHandler webHandler) {
+        public Builder(IWebHandler webHandler) {
             this(webHandler, null);
         }
 
-        public Builder(@Nullable LazyFinishedHelper finishedHelper) {
+        public Builder(LazyFinishedHelper finishedHelper) {
             this(null, finishedHelper);
         }
 
-        public Builder(@Nullable IWebHandler webHandler, @Nullable LazyFinishedHelper finishedHelper) {
+        public Builder(IWebHandler webHandler, LazyFinishedHelper finishedHelper) {
             this.webHandler = webHandler;
             this.finishedHelper = finishedHelper;
         }
@@ -70,13 +67,13 @@ public class WebViewHelper {
     private WebChromeClient webChromeClient = null;
     private WebViewClient webViewClient = null;
 
-    private WebViewHelper(@Nullable WebChromeClient webChromeClient, WebViewClient webViewClient) {
+    private WebViewHelper(WebChromeClient webChromeClient, WebViewClient webViewClient) {
         this.webChromeClient = webChromeClient;
         this.webViewClient = webViewClient;
     }
 
     @SuppressLint("JavascriptInterface")
-    public void initWebView(@NonNull WebView webView, @Nullable HashMap<String, Object> interfaces) {
+    public void initWebView(WebView webView, HashMap<String, Object> interfaces) {
         webView.setInitialScale(0);
         webView.setWebViewClient(webViewClient);
         if (webChromeClient != null) {

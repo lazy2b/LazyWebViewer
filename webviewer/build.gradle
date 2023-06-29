@@ -24,7 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    resourcePrefix 'webviewer_'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,6 +32,4 @@ android {
 
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-
 }
