@@ -1,2 +1,2 @@
-include ':webviewer'
+include ':weber'
 include ':app'
