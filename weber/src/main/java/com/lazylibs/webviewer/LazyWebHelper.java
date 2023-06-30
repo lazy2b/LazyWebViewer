@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import java.util.HashMap;
 
 
-public class WebViewHelper {
+public class LazyWebHelper {
 
     public static class Builder {
 
@@ -44,13 +44,13 @@ public class WebViewHelper {
         WebViewClient webViewClient;
         LazyFinishedHelper finishedHelper;
 
-        public WebViewHelper build() {
+        public LazyWebHelper build() {
             finishedHelper = finishedHelper != null ? finishedHelper : new LazyFinishedHelper();
             webViewClient = webViewClient != null ? webViewClient : new LazyWebViewClient(finishedHelper);
             if (webHandler != null) {
                 webChromeClient = webChromeClient != null ? webChromeClient : new LazyWebChromeClient(webHandler, finishedHelper);
             }
-            return new WebViewHelper(webChromeClient, webViewClient);
+            return new LazyWebHelper(webChromeClient, webViewClient);
         }
     }
 
@@ -67,7 +67,7 @@ public class WebViewHelper {
     private WebChromeClient webChromeClient = null;
     private WebViewClient webViewClient = null;
 
-    private WebViewHelper(WebChromeClient webChromeClient, WebViewClient webViewClient) {
+    private LazyWebHelper(WebChromeClient webChromeClient, WebViewClient webViewClient) {
         this.webChromeClient = webChromeClient;
         this.webViewClient = webViewClient;
     }

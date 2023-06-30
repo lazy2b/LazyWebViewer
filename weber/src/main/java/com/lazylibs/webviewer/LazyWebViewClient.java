@@ -59,13 +59,13 @@ public class LazyWebViewClient extends WebViewClient {
     private boolean filterUrlScheme(WebView view, String url) {
         if (!TextUtils.isEmpty(url)) {
             if (!url.startsWith("http")) {
-                WebViewHelper.logE("OverrideUrl", url);
+                LazyWebHelper.logE("OverrideUrl", url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 if (intent.resolveActivity(view.getContext().getPackageManager()) != null) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     view.getContext().startActivity(intent);
                 } else {
-                    WebViewHelper.logE("OverrideUrl", "Application is not installed. Please install it to use this feature.");
+                    LazyWebHelper.logE("OverrideUrl", "Application is not installed. Please install it to use this feature.");
 //                    Toast.makeText(view.getContext(), "Application is not installed. Please install it to use this feature.", Toast.LENGTH_LONG).show();
                 }
                 return true;

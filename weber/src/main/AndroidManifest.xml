@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity
-            android:name="com.lazylibs.webviewer.WebViewer"
+            android:name="com.lazylibs.webviewer.LazyWebActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

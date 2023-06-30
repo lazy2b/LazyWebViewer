@@ -12,9 +12,9 @@ import android.webkit.WebView;
 
 import java.util.HashMap;
 
-public class WebViewer extends Activity {
+public class LazyWebActivity extends Activity {
     protected WebView webView;
-    protected WebViewHelper webViewHelper;
+    protected LazyWebHelper lazyWebHelper;
     protected String cLoadUrl = "";
     protected boolean isBlank = false;
 
@@ -25,8 +25,12 @@ public class WebViewer extends Activity {
         webView = findViewById(R.id.wb_view);
         cLoadUrl = getIntent().getStringExtra(WEB_URL);
         cLoadUrl = TextUtils.isEmpty(cLoadUrl) ? "https://github.com/lazy2b/LazyWebViewer" : cLoadUrl;
-        String abc = String.join("|", LazyWebChromeClient.mimeTypes);
-        webViewHelper = new WebViewHelper.Builder(new IWebHandler() {
+        loadWeb();
+    }
+
+    protected void loadWeb() {
+
+        lazyWebHelper = new LazyWebHelper.Builder(new IWebHandler() {
 
             @Override
             public void onRealPageFinished(String url, boolean isReceivedError) {
@@ -51,27 +55,31 @@ public class WebViewer extends Activity {
 
             @Override
             public Activity requireActivity() {
-                return WebViewer.this;
+                return LazyWebActivity.this;
             }
         }).build();
-        webViewHelper.initWebView(webView, new HashMap<String, Object>() {{
+        lazyWebHelper.initWebView(webView, getJsBridge());
+
+        webView.loadUrl(cLoadUrl);
+
+        LazyWebHelper.logE("cLoadUrl", cLoadUrl);
+    }
+
+    protected HashMap<String, Object> getJsBridge() {
+        return new HashMap<String, Object>() {{
             put("androidObj", new Object() {
                 @JavascriptInterface
                 public void androidFun(String jsParams) {
 
                 }
             });
-        }});
-
-        webView.loadUrl(cLoadUrl);
-
-        WebViewHelper.logE("cLoadUrl", cLoadUrl);
+        }};
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (webViewHelper != null) {// handle choose file results...
-            webViewHelper.onActivityResult(requestCode, resultCode, data);
+        if (lazyWebHelper != null) {// handle choose file results...
+            lazyWebHelper.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -101,20 +109,30 @@ public class WebViewer extends Activity {
         return true;
     }
 
-    public static void start(Activity activity, String url) {
-        Intent intent = new Intent(activity, WebViewer.class);
+    public static void start(Activity activity, String url, boolean finish) {
+        Intent intent = new Intent(activity, LazyWebActivity.class);
         intent.putExtra(WEB_URL, url);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
-        activity.finish();
+        if (finish) activity.finish();
     }
 
     public static void start(Context context, String url) {
-        Intent intent = new Intent(context, WebViewer.class);
+        Intent intent = new Intent(context, LazyWebActivity.class);
         intent.putExtra(WEB_URL, url);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.getApplicationContext().startActivity(intent);
     }
 
+    public static void start(Activity activity, String url, boolean finish, HashMap<String, Object> jsInterface) {
+        Intent intent = new Intent(activity, LazyWebActivity.class);
+        intent.putExtra(WEB_URL, url);
+        intent.putExtra(WEB_BRIDGE, jsInterface);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.getApplicationContext().startActivity(intent);
+    }
+
     public static final String WEB_URL = "WEB.URL";
+    public static final String WEB_BRIDGE = "WEB.BRIDGE";
 
 }

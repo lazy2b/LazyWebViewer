@@ -12,7 +12,7 @@
         android:supportsRtl="true">
 
         <activity
-            android:name="com.lazylibs.webviewer.WebViewer"
+            android:name="com.lazylibs.webviewer.LazyWebActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
