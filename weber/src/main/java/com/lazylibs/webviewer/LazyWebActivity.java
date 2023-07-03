@@ -4,122 +4,58 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.lazylibs.utils.FragmentUtils;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class LazyWebActivity extends Activity {
-    protected WebView webView;
-    protected LazyWebHelper lazyWebHelper;
-    protected String cLoadUrl = "";
-    protected boolean isBlank = false;
+public class LazyWebActivity extends AppCompatActivity {
+    LazyWebFragment web;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tpl_webviewer);
-        webView = findViewById(R.id.wb_view);
-        cLoadUrl = getIntent().getStringExtra(WEB_URL);
-        cLoadUrl = TextUtils.isEmpty(cLoadUrl) ? "https://github.com/lazy2b/LazyWebViewer" : cLoadUrl;
-        loadWeb();
+        setContentView(R.layout.activity_lazy_borswer);
+        initWebView(getIntent().getStringExtra(WEB_URL), getIntent().getSerializableExtra(WEB_BRIDGE));
     }
 
-    protected void loadWeb() {
-
-        lazyWebHelper = new LazyWebHelper.Builder(new IWebHandler() {
-
-            @Override
-            public void onRealPageFinished(String url, boolean isReceivedError) {
-                // real page finished...
-                if (isReceivedError) {
-                    // handle error or load backup url...
-                    isBlank = true;
-                    webView.loadUrl("about:blank");
-                }
-            }
-
-            boolean firstLoadOver = false;
-
-            @Override
-            public void doProgressed(String url) {
-                if (!firstLoadOver) {
-                    firstLoadOver = true;
-                    // handle first loaded...
-                    findViewById(R.id.wb_loading).setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public Activity requireActivity() {
-                return LazyWebActivity.this;
-            }
-        }).build();
-        lazyWebHelper.initWebView(webView, getJsBridge());
-
-        webView.loadUrl(cLoadUrl);
-
-        LazyWebHelper.logE("cLoadUrl", cLoadUrl);
+    protected void initWebView(String stringExtra, Serializable jsBridge) {
+        HashMap<String,Object> objectHashMap = getJsBridge();
+        if(jsBridge instanceof HashMap){
+            objectHashMap = (HashMap<String, Object>) jsBridge;
+        }
+        FragmentUtils.replaceFragmentToActivity(R.id.fl_web, getSupportFragmentManager(), web = LazyWebFragment.newInstance(stringExtra, objectHashMap));
     }
 
     protected HashMap<String, Object> getJsBridge() {
-        return new HashMap<String, Object>() {{
-            put("androidObj", new Object() {
-                @JavascriptInterface
-                public void androidFun(String jsParams) {
-
-                }
-            });
-        }};
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (lazyWebHelper != null) {// handle choose file results...
-            lazyWebHelper.onActivityResult(requestCode, resultCode, data);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (webView != null) {
-            webView.onResume();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (webView != null) {
-            webView.onPause();
-        }
+        return new HashMap<>();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (!isBlank && keyCode == 4 && webView.canGoBack()) {
-            this.webView.goBack();
+        if (web.canGoBack(keyCode, event)) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
     public static void start(Activity activity, String url, boolean finish) {
-        Intent intent = new Intent(activity, LazyWebActivity.class);
-        intent.putExtra(WEB_URL, url);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-        if (finish) activity.finish();
+        start(activity, url, finish, new HashMap<>());
     }
 
     public static void start(Context context, String url) {
+        start(context, url, new HashMap<>());
+    }
+
+    public static void start(Context context, String url, HashMap<String, Object> jsInterface) {
         Intent intent = new Intent(context, LazyWebActivity.class);
         intent.putExtra(WEB_URL, url);
+        intent.putExtra(WEB_BRIDGE, jsInterface);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.getApplicationContext().startActivity(intent);
     }
@@ -130,6 +66,7 @@ public class LazyWebActivity extends Activity {
         intent.putExtra(WEB_BRIDGE, jsInterface);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.getApplicationContext().startActivity(intent);
+        if (finish) activity.finish();
     }
 
     public static final String WEB_URL = "WEB.URL";

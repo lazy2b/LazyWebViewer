@@ -87,12 +87,6 @@ public class LazyWebHelper {
         initSettings(webView.getSettings());
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (webChromeClient != null && webChromeClient instanceof LazyWebChromeClient) {
-            ((LazyWebChromeClient) webChromeClient).onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     public static void initSettings(WebSettings settings) {
         settings.setBuiltInZoomControls(false);//设置支持缩放

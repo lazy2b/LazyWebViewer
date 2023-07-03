@@ -13,7 +13,13 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-public class LazyWebChromeClient extends WebChromeClient {
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultCaller;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+public class LazyWebChromeClient extends WebChromeClient implements ActivityResultCallback<Uri> {
     private static final int CHOOSE_REQUEST_CODE = 0x601;
     //    private ValueCallback<Uri> uploadFile;
     private ValueCallback<Uri[]> uploadFiles;
@@ -77,29 +83,13 @@ public class LazyWebChromeClient extends WebChromeClient {
 
     public void openFileChooseProcess(ValueCallback<Uri[]> valueCallback) {
         this.uploadFiles = valueCallback;
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //intent.setType("*/*") => select all...
-        intent.setType(String.join("|", mimeTypes));
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);//iWebHandler.getString(R.string.tips_choose_title)
-        iWebHandler.requireActivity().startActivityForResult(Intent.createChooser(intent, null), CHOOSE_REQUEST_CODE);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CHOOSE_REQUEST_CODE) {
-                if (null != uploadFiles) {
-                    Uri result = data == null ? null : data.getData();
-                    uploadFiles.onReceiveValue(new Uri[]{result});
-                    uploadFiles = null;
-                }
-            }
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            if (null != uploadFiles) {
-                uploadFiles.onReceiveValue(null);
-                uploadFiles = null;
-            }
-        }
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        //intent.setType("*/*") => select all...
+//        intent.setType(String.join("|", mimeTypes));
+//        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);//iWebHandler.getString(R.string.tips_choose_title)
+//        iWebHandler.requireActivity().startActivityForResult(Intent.createChooser(intent, null), CHOOSE_REQUEST_CODE);
+        ActivityResultLauncher<String> launcher = this.iWebHandler.startActivityForResult(String.join("|", mimeTypes), new ActivityResultContracts.GetContent(), this);
     }
 
 
@@ -120,5 +110,13 @@ public class LazyWebChromeClient extends WebChromeClient {
     @Override
     public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
         return super.onJsPrompt(view, url, message, defaultValue, result);
+    }
+
+    @Override
+    public void onActivityResult(Uri result) {
+        if (null != uploadFiles) {
+            uploadFiles.onReceiveValue(new Uri[]{result});
+            uploadFiles = null;
+        }
     }
 }

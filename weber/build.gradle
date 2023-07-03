@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: 'https://raw.githubusercontent.com/lazy2b/android-publish/main/mvn-gradle8.0.gradle'
+apply from: 'https://raw.githubusercontent.com/lazy2b/android-publish/main/signing.gradle'
 
 android {
     namespace 'com.lazylibs.webviewer'
@@ -14,6 +15,12 @@ android {
     }
 }
 
+tasks.withType(Sign) {
+    notCompatibleWithConfigurationCache("https://github.com/gradle/gradle/issues/13470")
+}
 
 dependencies {
+    implementation 'com.lazylibs:widget:0.0.1-20230703.094206-2'
+    implementation 'com.lazylibs:utils:0.0.1-SNAPSHOT'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }

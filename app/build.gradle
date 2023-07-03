@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
-//    implementation project(':weber')
-    implementation 'com.lazylibs:weber:0.0.1-SNAPSHOT'
+    implementation project(':weber')
+//    implementation 'com.lazylibs:weber:0.0.1-SNAPSHOT'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }
