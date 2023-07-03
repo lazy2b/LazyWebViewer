@@ -106,7 +106,7 @@ public class LazyWebActivity extends Activity {
             this.webView.goBack();
             return true;
         }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
     public static void start(Activity activity, String url, boolean finish) {
