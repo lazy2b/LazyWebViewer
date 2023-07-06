@@ -11,8 +11,9 @@ import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
-interface IWebHandler extends IActivityGetter {
-    void doProgressed(String url);
+public interface IWebHandler extends IActivityGetter {
+    default void doProgressed(String url) {
+    }
 
     default void onProgressChanged(WebView view, int newProgress) {
     }

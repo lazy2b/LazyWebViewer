@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 
 
 public interface IActivityGetter {
-    Activity requireActivity();
+    default Activity requireActivity() {
+        return null;
+    }
 
     default String getString(int resId) {
         try {

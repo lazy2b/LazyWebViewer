@@ -32,6 +32,13 @@ public class LazyWebFragment extends Fragment {
         return false;
     }
 
+    public LazyWebFragment setExtraWebHandler(IWebHandler extraWebHandler) {
+        this.extraWebHandler = extraWebHandler;
+        return this;
+    }
+
+    protected IWebHandler extraWebHandler = null;
+
     protected void loadWeb() {
 
         lazyWebHelper = new LazyWebHelper.Builder(new IWebHandler() {
@@ -44,6 +51,9 @@ public class LazyWebFragment extends Fragment {
                     isBlank = true;
                     webView.loadUrl("about:blank");
                 }
+                if (extraWebHandler != null) {
+                    extraWebHandler.onRealPageFinished(url, isReceivedError);
+                }
             }
 
             boolean firstLoadOver = false;
@@ -54,6 +64,16 @@ public class LazyWebFragment extends Fragment {
                     firstLoadOver = true;
                     // handle first loaded...
                     requireView().findViewById(R.id.loading_container).setVisibility(View.GONE);
+                }
+                if (extraWebHandler != null) {
+                    extraWebHandler.doProgressed(url);
+                }
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (extraWebHandler != null) {
+                    extraWebHandler.onProgressChanged(view, newProgress);
                 }
             }
 
@@ -114,7 +134,7 @@ public class LazyWebFragment extends Fragment {
     }
 
     protected void setJsInterfaces(HashMap<String, Object> interfaces) {
-        this.interfaces = interfaces;
+        this.interfaces = interfaces == null ? new HashMap<>() : interfaces;
     }
 
     protected void setUrl(String url) {
